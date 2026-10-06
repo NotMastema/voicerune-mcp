@@ -101,7 +101,7 @@ def main() -> None:
         sys.exit("Didn't see a sign-in within 5 minutes. Run login.py again.")
 
     # Trade the browser's token for one that belongs only to Claude.
-    path = server.state_path(args.profile) if args.profile != "default" else server.DATA_DIR / "session.json"
+    path = server.state_path(args.profile)
     saved = server.refresh(session["refresh_token"], path)
     print(f"Signed in as {saved.get('email') or 'your Ruune account'}  (profile: {args.profile})")
     print("All set. Restart Claude Desktop if it's open.")

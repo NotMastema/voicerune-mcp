@@ -1,7 +1,7 @@
 """Ruune MCP server: read your Ruune recordings, transcripts and summaries from Claude.
 
 Talks to Ruune's Supabase backend as you. Sign in once with `login.py`; the session is
-saved under %LOCALAPPDATA%\\ruune-mcp\\ and renewed automatically.
+saved in %USERPROFILE%\\.voicerune\\ and renewed automatically.
 
 Optional env (in claude_desktop_config.json):
   RUUNE_PROFILE         name for a separate Ruune account, e.g. "work" (default: "default")
@@ -19,15 +19,22 @@ COOKIE = "sb-fqnfgorcssrnpcavhfhd-auth-token"
 # Public "publishable" key shipped in Ruune's web app for every user (not a secret).
 DEFAULT_APIKEY = "sb_publishable_SnXowShyuQqCPpaJd9IZsQ_zo90I6oB"
 APIKEY = os.environ.get("RUUNE_APIKEY") or DEFAULT_APIKEY
-DATA_DIR = Path(os.environ.get("LOCALAPPDATA", Path.home())) / "ruune-mcp"
+# Not under AppData: the Claude Desktop Store app sees a private, redirected copy of AppData,
+# which would split the saved sign-in between "inside Claude" and "outside Claude".
+DATA_DIR = Path(os.environ.get("VOICERUNE_DATA") or Path.home() / ".voicerune")
+LEGACY_DIR = Path(os.environ.get("LOCALAPPDATA", Path.home())) / "ruune-mcp"
 
 
 def state_path(profile: str | None = None) -> Path:
     profile = profile or os.environ.get("RUUNE_PROFILE", "default")
-    legacy = DATA_DIR / "session.json"
-    if profile == "default" and legacy.exists():
-        return legacy
-    return DATA_DIR / f"session-{profile}.json"
+    path = DATA_DIR / f"session-{profile}.json"
+    if not path.exists():  # one-time move from the old location
+        for old in ([LEGACY_DIR / "session.json"] if profile == "default" else []) + [LEGACY_DIR / f"session-{profile}.json"]:
+            if old.exists():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(old.read_text())
+                break
+    return path
 
 
 def discover_apikey() -> str | None:

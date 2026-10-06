@@ -43,11 +43,11 @@ Double-click `setup.bat` again. It updates the files and keeps your sign-in.
 | What you see | What to do |
 |---|---|
 | The black window shows **"!!"** and an error | Take a screenshot and ask Claude for help. |
-| Claude says **"sign-in expired"** or **"Not signed in"** | Delete the folder `%LOCALAPPDATA%\ruune-mcp` (paste that into the File Explorer address bar), then double-click `setup.bat` again. |
+| Claude says **"sign-in expired"** or **"Not signed in"** | Delete the folder `%USERPROFILE%\.voicerune` (paste that into the File Explorer address bar), then double-click `setup.bat` again. |
 | The pop-up browser says Google sign-in is **"not secure"** | Close it and double-click `setup.bat` again. If it keeps happening, ask Claude. |
 | **ruune** shows "Server disconnected" in Claude → Settings → Developer | Double-click `setup.bat` again, then restart Claude. |
 
-Every computer signs in on its own. Never copy the `%LOCALAPPDATA%\ruune-mcp` folder from one computer to another.
+Every computer signs in on its own. Never copy the `%USERPROFILE%\.voicerune` folder from one computer to another.
 
 ---
 
@@ -55,7 +55,7 @@ Every computer signs in on its own. Never copy the `%LOCALAPPDATA%\ruune-mcp` fo
 
 1. Press **Windows key + R**, paste this, and press **Enter**:
    ```
-   %LOCALAPPDATA%\voicerune-mcp\setup.bat work
+   %USERPROFILE%\voicerune-mcp\setup.bat work
    ```
 2. Sign in with the **other** Google account when the browser opens.
 
@@ -65,6 +65,6 @@ It shows up in Claude as **ruune-work**. (Use any one-word nickname instead of `
 
 ## For the curious: what it installs
 
-- The app goes in `%LOCALAPPDATA%\voicerune-mcp` (code + its own Python environment)
-- Your Ruune sign-in is saved in `%LOCALAPPDATA%\ruune-mcp`
+- The app goes in `%USERPROFILE%\voicerune-mcp` (code + its own Python environment)
+- Your Ruune sign-in is saved in `%USERPROFILE%\.voicerune`
 - One entry named `ruune` is added to Claude Desktop's config (a backup copy is saved next to it as `.json.bak`)

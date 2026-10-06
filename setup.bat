@@ -1,7 +1,7 @@
 @echo off
 setlocal
 title VoiceRune setup
-set "APP=%LOCALAPPDATA%\voicerune-mcp"
+set "APP=%USERPROFILE%\voicerune-mcp"
 set "PROFILE=%~1"
 if "%PROFILE%"=="" set "PROFILE=default"
 

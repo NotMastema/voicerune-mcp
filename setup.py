@@ -9,7 +9,6 @@ from pathlib import Path
 
 APP = Path(__file__).resolve().parent
 VENV_PY = APP / ".venv" / "Scripts" / "python.exe"
-DATA = Path(os.environ["LOCALAPPDATA"]) / "ruune-mcp"
 
 
 def step(n, text):
@@ -29,9 +28,9 @@ def fail(msg):
 
 
 def session_exists(profile):
-    if profile == "default":
-        return (DATA / "session.json").exists() or (DATA / "session-default.json").exists()
-    return (DATA / f"session-{profile}.json").exists()
+    code = f"import server; print(server.state_path({profile!r}).exists())"
+    r = subprocess.run([str(VENV_PY), "-c", code], cwd=APP, capture_output=True, text=True)
+    return r.stdout.strip() == "True"
 
 
 def config_path():
