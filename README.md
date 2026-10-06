@@ -32,6 +32,63 @@ You set it up **once per computer**. It takes about 5 minutes. You don't need a 
 
 ---
 
+## Ways to use it
+
+### 1. Just ask (on the computer)
+
+Open a chat in Claude Desktop and ask things like:
+
+- "List my Ruune recordings from this week."
+- "Summarize my call from this morning and list the action items."
+- "Search my recordings for anything about pricing."
+- "Give me the full transcript of the pipeline sync, with timestamps."
+
+### 2. From your phone or iPad (your computer does the work)
+
+The recordings are fetched **by your computer**. Your phone or iPad is just where you ask.
+
+1. On the computer, start a **Cowork** task in Claude Desktop with **this computer selected**. If a task isn't linked yet, open it in Claude Desktop and choose **"Link to this computer"**.
+2. Later, open that same task in the Claude app on your phone or iPad and ask away.
+
+✅ This works as long as the computer is **on, awake, online, and Claude Desktop is open**. (See "Keep your computer ready" below.)
+
+### 3. Automatic daily or weekly summaries (scheduled tasks)
+
+Cowork can run a task for you on a schedule. In a Cowork task that's **linked to your computer**, paste something like this and change the time and details:
+
+> Create a scheduled task that runs every weekday at 6:00 PM my time and needs this computer. It should use the ruune tools to find every Ruune recording from today, read each transcript, and send me one short digest: for each recording, the title, 3–5 bullet points, any action items with who owns them, and any dates or numbers mentioned. If there were no recordings today, just say so.
+
+Other ideas you can schedule the same way:
+
+| Schedule | What to ask for |
+|---|---|
+| Every weekday evening | Daily digest of today's recordings (the example above) |
+| Friday afternoon | Weekly recap: themes across all the week's recordings, open action items, people mentioned |
+| Every morning | "Anything from yesterday's recordings I promised to do today?" |
+| After sales calls | Draft a follow-up email for each customer call (saved as a draft, not sent) |
+| Weekly | Save each new transcript as a text file in a folder on your computer, as a personal backup |
+
+Good to know:
+
+- The computer must be ready when the schedule fires (next section). If it's asleep, that run can't reach your recordings.
+- A scheduled run happens with nobody watching. If it stops to ask for approval, open the task's settings and turn on **"Automatically approve"** (if your account allows it).
+- To change or stop it, just ask Claude: "Show my scheduled tasks" or "Pause the Ruune digest."
+
+### Keep your computer ready
+
+For options 2 and 3, the computer has to be on and reachable:
+
+1. **Don't let it sleep when plugged in:** **Settings** → **System** → **Power & battery** (or **Power**) → **Screen and sleep** → set **"When plugged in, put my device to sleep after"** to **Never**. Turning the *screen* off is fine.
+2. **Laptop lid:** press **Windows key**, type `lid`, open **"Change what closing the lid does"**, and set **When plugged in** to **Do nothing**. Now you can close the lid while it's plugged in.
+3. **Open Claude Desktop automatically:** press **Windows key + R**, type `shell:startup`, press **Enter**, then drag a **Claude** shortcut from the Start menu into that folder. Claude now opens every time you sign in to Windows.
+4. **Watch out for restarts:** Windows Update can restart the computer overnight. With step 3 done, Claude comes back by itself after you sign in.
+
+### Without your computer at all?
+
+Not possible with this version. It runs on your computer. Making it work when the computer is off would mean hosting it online (for example on Cloudflare) and adding it to Claude as a custom connector. That's a future upgrade.
+
+---
+
 ## Get the newest version
 
 Double-click `setup.bat` again. It updates the files and keeps your sign-in.
