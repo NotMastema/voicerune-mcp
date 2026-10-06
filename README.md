@@ -1,8 +1,10 @@
-# Ruune for Claude
+# VoiceRune MCP: Ruune for Claude
 
 This lets Claude read your Ruune recordings: the list, the full transcripts, and the summaries.
 
-You set it up **once per computer**. It takes about 15 minutes.
+You set it up **once per computer**. It takes about 10 minutes. You do **not** need a GitHub account.
+
+> Unofficial. Not made by or affiliated with Ruune / Internet of Humans. It only reads your own recordings, signed in as you.
 
 ---
 
@@ -14,29 +16,19 @@ You set it up **once per computer**. It takes about 15 minutes.
 
 ---
 
-## Step 1: Install the 3 helper programs
+## Step 1: Install Python
 
-Skip any you already have.
+Skip this if you already have it.
 
-1. **Python**: go to https://www.python.org/downloads/ and click the big yellow button. When the installer opens, check the box **"Add python.exe to PATH"**, then click **Install Now**.
-2. **Git**: go to https://git-scm.com/download/win, download it, and click **Next** on every screen.
-3. **GitHub CLI**: go to https://cli.github.com, download it, and click **Next** on every screen.
-
-Then **close and reopen PowerShell** so it notices the new programs.
-
-> To open PowerShell, press the **Windows key**, type `powershell`, and press **Enter**.
+Go to https://www.python.org/downloads/ and click the big yellow button. When the installer opens, check the box **"Add python.exe to PATH"**, then click **Install Now**.
 
 ---
 
-## Step 2: Sign in to GitHub
+## Step 2: Open PowerShell
 
-In PowerShell, type:
+Press the **Windows key**, type `powershell`, and press **Enter**. A blue or black window opens. That's where you'll paste the commands below.
 
-```powershell
-gh auth login
-```
-
-Pick these answers: **GitHub.com** → **HTTPS** → **Yes** → **Login with a web browser**. It shows a code. Press Enter, paste the code in the browser, and approve.
+> If PowerShell was already open before you installed Python, close it and open a new one.
 
 ---
 
@@ -45,14 +37,18 @@ Pick these answers: **GitHub.com** → **HTTPS** → **Yes** → **Login with a 
 Copy and paste this whole box into PowerShell and press **Enter**:
 
 ```powershell
-cd C:\
-gh repo clone ruune-mcp
-cd C:\ruune-mcp
+$zip = "$env:TEMP\voicerune.zip"
+Invoke-WebRequest https://github.com/NotMastema/voicerune-mcp/archive/refs/heads/main.zip -OutFile $zip
+Expand-Archive $zip -DestinationPath "$env:TEMP\voicerune" -Force
+Move-Item "$env:TEMP\voicerune\voicerune-mcp-main" C:\voicerune-mcp
+cd C:\voicerune-mcp
 py -m venv .venv
 .\.venv\Scripts\pip install -r requirements.txt
 ```
 
 Wait until it stops scrolling. ✅ The last line should say **"Successfully installed ..."**.
+
+> If it says the folder **already exists**, you set this up before. Skip to "Getting updates" at the bottom.
 
 ---
 
@@ -80,8 +76,8 @@ In the same PowerShell window, type:
 
 ```json
     "ruune": {
-      "command": "C:\\ruune-mcp\\.venv\\Scripts\\python.exe",
-      "args": ["C:\\ruune-mcp\\server.py"]
+      "command": "C:\\voicerune-mcp\\.venv\\Scripts\\python.exe",
+      "args": ["C:\\voicerune-mcp\\server.py"]
     },
 ```
 
@@ -111,11 +107,10 @@ In the same PowerShell window, type:
 
 | What you see | What to do |
 |---|---|
-| **"Server disconnected"** in Settings → Developer | Open PowerShell and run `cd C:\ruune-mcp` then `.\.venv\Scripts\python.exe server.py`. If an error shows, send it to Claude. If nothing happens, that part works (press Ctrl + C); check the config file for a typo or missing comma. |
+| **"Server disconnected"** in Settings → Developer | Open PowerShell and run `cd C:\voicerune-mcp` then `.\.venv\Scripts\python.exe server.py`. If an error shows, send it to Claude. If nothing happens, that part works (press Ctrl + C); check the config file for a typo or missing comma. |
 | Claude says **"sign-in expired"** or **"Not signed in"** | Do **Step 4** again, then restart Claude (Step 6). |
 | The pop-up browser says Google sign-in is **"not secure"** | Close it, run `login.py` again, and try once more. If it keeps happening, tell Claude. |
 | `py` is not recognized | Python isn't installed right. Redo Step 1, and make sure you check **"Add python.exe to PATH"**. |
-| `gh` or `git` is not recognized | Close and reopen PowerShell. If it still fails, reinstall from Step 1. |
 
 ---
 
@@ -124,7 +119,7 @@ In the same PowerShell window, type:
 1. Sign in the second account with a nickname, like `work`:
 
 ```powershell
-cd C:\ruune-mcp
+cd C:\voicerune-mcp
 .\.venv\Scripts\python.exe login.py --profile work
 ```
 
@@ -132,18 +127,24 @@ cd C:\ruune-mcp
 
 ```json
     "ruune-work": {
-      "command": "C:\\ruune-mcp\\.venv\\Scripts\\python.exe",
-      "args": ["C:\\ruune-mcp\\server.py"],
+      "command": "C:\\voicerune-mcp\\.venv\\Scripts\\python.exe",
+      "args": ["C:\\voicerune-mcp\\server.py"],
       "env": { "RUUNE_PROFILE": "work" }
     },
 ```
 
 ## Getting updates on a computer that already has this
 
+Paste this into PowerShell:
+
 ```powershell
-cd C:\ruune-mcp
-git pull
+$zip = "$env:TEMP\voicerune.zip"
+Invoke-WebRequest https://github.com/NotMastema/voicerune-mcp/archive/refs/heads/main.zip -OutFile $zip
+Remove-Item "$env:TEMP\voicerune" -Recurse -Force -ErrorAction SilentlyContinue
+Expand-Archive $zip -DestinationPath "$env:TEMP\voicerune" -Force
+Copy-Item "$env:TEMP\voicerune\voicerune-mcp-main\*" C:\voicerune-mcp -Recurse -Force
+cd C:\voicerune-mcp
 .\.venv\Scripts\pip install -r requirements.txt
 ```
 
-Then restart Claude Desktop.
+Then restart Claude Desktop. You don't need to sign in again.
